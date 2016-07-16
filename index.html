@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="css/style.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/script.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+<body ng-app="myApp" ng-controller="customersCtrl">
+  <div class="row">
+    <nav role="navigation">
+      <span class="entypo-menu" id="toggle-menu"></span>  
+    <div class="logo">
+      <b>Nutanix</b> Deals Hub
+    </div>
+      <ul>
+        <li>
+			<form  class="search-wrapper cf">
+				<input type="text" placeholder="Search here..." ng-model="searchDeal" required="">
+				<button type="submit">Search</button>
+			</form>
+		</li>
+		
+        <li class="has-child"><a href="#">Sort</a>
+          <ul class="dropdown">
+              <li><a href="#" data-field="offer" ng-click="sortType = 'offer'; sortReverse = !sortReverse">Offer Price</a></li>
+              <li><a href="#" data-field="actual" ng-click="sortType = 'actual'; sortReverse = !sortReverse">Actual Price</a></li>
+              <li><a href="#" data-field="discount" ng-click="sortType = 'discount'; sortReverse = !sortReverse">Discount</a></li>
+              <li><a href="#" data-field="rating" ng-click="sortType = 'rating'; sortReverse = !sortReverse">Rating</a></li>
+          </ul>
+        </li>
+		<li style="float:left;" ng-controller="apiCtrl" ><a href="#">API Hits:{{ apiCount }}</a></li>
+		
+		
+      </ul>
+    </nav>	
+  </div>
+<div class="product_grid"  >
+  <ul class="product_list list"   >
+    <li class="product_item" ng-repeat="deal in deals | orderBy:sortType:sortReverse | filter:searchDeal" >
+	  <div class="product_sale">
+        <p>{{deal.discount}} Off</p>
+      </div>
+	  <div class="product_image">
+        <a href="#"><img src="{{ deal.image }}" alt="{{ deal.name }}"></a>
+          
+      </div>
+      <div class="product_values">
+        <div class="product_title">
+          <h5><b>{{ deal.name }}</b></h5>
+        </div>
+        <div class="product_price">
+          <a href="#"><i class="fa fa-money"></i> <b>Actual Price:</b> <span class="price_old">${{ deal.actual_price }}</span>
+		  <br>
+		  <i class="fa fa-percent"></i> <b>Offer Price:</b><span class="price_new"> ${{ discounted(deal) }}</span></a>
+        </div>
+        <div class="product_desc">
+          <p class="truncate"><i class="fa fa-star"></i> <b>Rating:</b> {{ deal.rating }}</p>
+          <p class="truncate" ><i class="fa fa-shopping-bag"></i> <b>Provider:</b> <a href="{{ deal.link }}">{{ deal.provider }}</a></p>
+          <p class="truncate"><i class="fa fa-link"></i> <a target="_blank" href="{{ deal.link }}"><b>Go To Provider Website</b></a></p>
+		</div>
+        <div class="product_buttons">
+		  <button class="product_heart" title="Like"><i class="fa fa-thumbs-up"></i></button>
+          <button class="product_compare" title="share"><i class="fa fa-share-alt"></i></button>
+          <button class="add_to_cart" title="Add To Cart"><i class="fa fa-shopping-cart"></i></button>
+		
+		</div>
+		
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
